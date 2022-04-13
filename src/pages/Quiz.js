@@ -11,10 +11,14 @@ export default function Quiz() {
     }
 
     function getQuizId() {
-        console.log(localStorage.getItem("quiz-id"));
         return localStorage.getItem("quiz-id");
 
     }
+
+    function getUserId() {
+        return JSON.parse(localStorage.getItem("user-info")).id;
+    }
+
     const [quiz, setQuiz] = useState({});
     const [questions, setQuestions] = useState();
     const [loading , setLoading] = useState(true);
@@ -24,35 +28,31 @@ export default function Quiz() {
 
     function postAnswer(question_id, answer, user_id) {
         const postData = { data: { question_id, answer, user_id} };
-        axios.post("https://pure-caverns-82881.herokuapp.com/api/v54/users", postData,
+        axios.post("https://pure-caverns-82881.herokuapp.com/api/v54/quizzes/" + getQuizId() + "/submit", postData,
             {
                 headers: {
                     "X-Access-Token": "e0b8123ec27f579c17eee96d003df3570d897b4f5d9c4d53de95b1c3f51e6fd0",
                 }
             }).then((res) => {
-            console.log(res);
-            postData.data.id = res.data.id;
-            localStorage.setItem("answersList", JSON.stringify(postData['data']))
-        }).catch((err) => alert("This User Already Exists"));
+            setAnswer([...answersList ,res.data.correct]);
+        }).catch((err) => alert("Incorrect data"));
     }
 
     function goToNextQuestion(e) {
         if(currentQuestion < 10) {
             setCurrentQuestion(currentQuestion + 1);
-            answersList.push(e.target.innerText);
-            setAnswer(answersList);
         } else {
-            answersList.push(e.target.innerText);
-            setAnswer(answersList);
             setShowScore(true);
-            calculateScore(answersList);
         }
     }
 
     function calculateScore(answers){
-        // for(let i = 0; i < answers.length; i++) {
-        //     if(answers[i] === quiz.questions[i].)
-        // }
+        let cnt = 0;
+        for(let i = 0; i < answers.length; i++) {
+            if(answers[i])
+                cnt++;
+        }
+        return cnt
     }
 
     useEffect(() => {
@@ -67,8 +67,6 @@ export default function Quiz() {
         }).catch((err) => console.log(err));
     }, []);
 
-    console.log(answersList);
-    console.log(quiz);
     if(loading) {
         return (
             <div className="App">
@@ -83,7 +81,7 @@ export default function Quiz() {
             <div className="App">
                 <div className="mainContainer">
                     <Profile name={getUserName()}/>
-                        <h3>Your score is 10 / {quiz["questions"].length}</h3>
+                        <h3>Your score is {calculateScore(answersList)} / {quiz["questions"].length}</h3>
                 </div>
             </div>
         );
@@ -94,12 +92,12 @@ export default function Quiz() {
             <div className="mainContainer">
                 <Profile name={getUserName()}/>
                     <div className="fullQuestionContainer">
-                        <h3> {currentQuestion} / 10</h3>
+                        <h3> {currentQuestion} / {quiz["questions"].length}</h3>
                         <div className="questionContainer">
                             <h3>{questions[currentQuestion - 1]["question"]}</h3>
                         </div>
-                        <div className="answersContainer" onClick={goToNextQuestion}>
-                            {questions[currentQuestion - 1]["answers"].map(answer => <div id={questions[currentQuestion - 1].id} className="answerContainer">{answer}</div>)}
+                        <div className="answersContainer">
+                            {questions[currentQuestion - 1]["answers"].map(answer => <div id={questions[currentQuestion - 1].id} className="answerContainer" onClick={(e) =>{ postAnswer(questions[currentQuestion - 1].id, answer, getUserId()); goToNextQuestion(e);}}>{answer}</div>)}
                         </div>
                     </div>
             </div>
