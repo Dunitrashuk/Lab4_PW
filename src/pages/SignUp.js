@@ -16,10 +16,9 @@ export default function SignUp() {
         axios.post("https://pure-caverns-82881.herokuapp.com/api/v54/users", postData,
             {
                 headers: {
-                    "X-Access-Token": "e0b8123ec27f579c17eee96d003df3570d897b4f5d9c4d53de95b1c3f51e6fd0",
+                    "X-Access-Token": "9ec9dddd1901d812bb3a3b1b80fbc664bc98b424bca50dbabe9d150bed730da0",
                 }
             }).then((res) => {
-                console.log(res);
                 postData.data.id = res.data.id;
                 localStorage.setItem("user-info", JSON.stringify(postData['data']))
                 navigate("/landing");

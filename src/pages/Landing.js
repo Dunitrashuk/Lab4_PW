@@ -1,7 +1,6 @@
-
 import Quizes from "../components/Quizes"
 import Profile from "../components/Profile";
-import axios from "axios";
+
 
 function getUserName() {
     let name = JSON.parse(localStorage.getItem("user-info"));

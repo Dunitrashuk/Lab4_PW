@@ -223,3 +223,74 @@ input::placeholder {
   background: #345287;
   color: white;
 }
+
+.scoreContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.createQuizContainer {
+  cursor: pointer;
+  height: 45%;
+  width: 200px;
+  color: rgba(99, 142, 218, 0.63);
+  font-weight: bold;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(99, 142, 218, 0.63);
+  border-radius: 15px;
+  background: rgba(175, 197, 236, 0.6);
+  transition: .12s ease-in-out;
+}
+
+.createQuizContainer:hover {
+  border: 2px solid #345287;
+  color: #345287;
+}
+
+.customAnswerContainer {
+  font-family: Montserrat, sans-serif;
+  font-size: 1vw;
+  color: #345287;
+  min-font-size: 15px;
+  text-align: center;
+  margin: 10px;
+  padding: 15px;
+  width: 40%;
+  height: fit-content;
+  border-radius: 15px;
+  border: 2px solid #345287;
+  background: transparent;
+}
+
+.customAnswersContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.customQuestionContainer {
+  font-family: Montserrat, sans-serif;
+  font-size: 2vmin;
+  text-align: center;
+  padding: 0 15px 0 15px;
+  color: #345287;
+  /*text-decoration: rgba(99, 142, 218, 0.6) underline;*/
+  min-font-size: 15px;
+  margin: 10px;
+  width: 80%;
+  height: fit-content;
+  border-radius: 15px;
+  background: transparent;
+}
+
+*:focus {
+  outline: none;
+}
